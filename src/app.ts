@@ -1,25 +1,11 @@
-import fs from "fs";
+import { yarg } from './config/plugins/yargs.plugin';
+import { ServerApp } from './presentation/server-app';
 
-let base: number = 5;
+(async () => {
+  await main();
+})();
 
-const printTable = (baseNumber: number): void => {
-  let outputMessage: string = '';
-  const headerMessage: string = `
-----------------------------
-      Tabla del ${baseNumber}
-----------------------------\n
-`;
-
-  for (let i: number = 1; i <= 10; i++) {
-    outputMessage += `${baseNumber} x ${i} = ${baseNumber * i}\n`;
-  }
-
-  outputMessage = headerMessage + outputMessage;
-  console.log(outputMessage);
-  const outputPath: string = 'outputs';
-  fs.mkdirSync(outputPath, { recursive: true });
-  fs.writeFileSync(`${outputPath}/tabla-${base}.txt`, outputMessage);
-  console.log('File created successfully!');
-}
-
-printTable(base);
+async function main() {
+  const { b: base, l: limit, s: showTable, n: fileName, d: fileDestination } = yarg;
+  ServerApp.run({ base, limit, showTable, fileName, fileDestination });
+};
